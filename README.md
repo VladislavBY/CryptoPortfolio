@@ -11,7 +11,7 @@ Main used tools:
 
 ✔ OkHTTP + RxJava for API
 
-✔ JUnit + Mockito and Expresso
+✔ JUnit + Mockito and Espresso
 
 ✔ Animations
 
