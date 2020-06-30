@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
 
 import java.util.Optional;
 
@@ -37,8 +38,9 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
     private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
-    private Optional<OnUpdatePortfolioListener> onUpdateCoinListListenerOptional = Optional.empty();
+    private Optional<OnUpdatePortfolioListener> onUpdatePortfolioListenerOptional = Optional.empty();
     private Context context;
+    private Optional<ViewModelProvider.Factory> viewModelFactoryOptional = Optional.empty();
     private SettingsFragmentViewModel settingsFragmentViewModel;
 
     private RadioGroup selectedSymbol;
@@ -54,15 +56,22 @@ public class SettingsFragment extends Fragment {
         return new SettingsFragment();
     }
 
+    /**
+     * !onHomeClickListenerOptional.isPresent() and !onUpdatePortfolioListenerOptional.isPresent()
+     * for check is testing (with mock) or no
+     * {@link #setOnHomeClickListenerOptional} {@link #setOnUpdateCoinListListenerOptional}
+     *
+     * @param context context
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        if (context instanceof OnHomeClickListener) {
+        if (!onHomeClickListenerOptional.isPresent() && context instanceof OnHomeClickListener) {
             onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
         }
-        if (context instanceof OnUpdatePortfolioListener) {
-            onUpdateCoinListListenerOptional = Optional.of((OnUpdatePortfolioListener) context);
+        if (!onUpdatePortfolioListenerOptional.isPresent() && context instanceof OnUpdatePortfolioListener) {
+            onUpdatePortfolioListenerOptional = Optional.of((OnUpdatePortfolioListener) context);
         }
     }
 
@@ -79,9 +88,17 @@ public class SettingsFragment extends Fragment {
         initViews(view);
     }
 
+    /**
+     * !viewModelFactoryOptional.isPresent() for check is testing (with mock) or no
+     * {@link #setViewModelFactoryOptional}
+     */
+
     private void initViewModel() {
-        settingsFragmentViewModel = new ViewModelProvider(getViewModelStore(), new SettingsFragmentViewModelFactory(context))
-                .get(SettingsFragmentViewModel.class);
+        if (!viewModelFactoryOptional.isPresent()) {
+            viewModelFactoryOptional = Optional.of(new SettingsFragmentViewModelFactory(context));
+        }
+        viewModelFactoryOptional.ifPresent(viewModelFactory -> settingsFragmentViewModel = new ViewModelProvider(
+                getViewModelStore(), viewModelFactory).get(SettingsFragmentViewModel.class));
     }
 
     private void initViews(@NotNull View view) {
@@ -122,7 +139,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveSortSetting(SUM_SORT);
                     break;
             }
-            onUpdateCoinListListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
+            onUpdatePortfolioListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
         });
     }
 
@@ -189,7 +206,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveFiatSetting(ETH);
                     break;
             }
-            onUpdateCoinListListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
+            onUpdatePortfolioListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
         });
     }
 
@@ -203,7 +220,22 @@ public class SettingsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         onHomeClickListenerOptional = Optional.empty();
-        onUpdateCoinListListenerOptional = Optional.empty();
+        onUpdatePortfolioListenerOptional = Optional.empty();
         context = null;
+    }
+
+    @TestOnly
+    void setViewModelFactoryOptional(ViewModelProvider.Factory viewModelFactory) {
+        viewModelFactoryOptional = Optional.of(viewModelFactory);
+    }
+
+    @TestOnly
+    void setOnHomeClickListenerOptional(OnHomeClickListener onHomeClickListener) {
+        onHomeClickListenerOptional = Optional.of(onHomeClickListener);
+    }
+
+    @TestOnly
+    void setOnUpdateCoinListListenerOptional(OnUpdatePortfolioListener onUpdatePortfolioListener) {
+        onUpdatePortfolioListenerOptional = Optional.of(onUpdatePortfolioListener);
     }
 }
