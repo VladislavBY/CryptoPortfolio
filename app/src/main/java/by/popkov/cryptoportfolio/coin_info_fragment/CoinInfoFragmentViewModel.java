@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
@@ -63,17 +62,16 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
         return coinForViewMutableLiveData;
     }
 
+    @SuppressLint("CheckResult")
     void refreshCoinData() {
         setIsLoadingLiveData(true);
-        try {
-            Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getId()).get();
-            apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(coin -> mapper.apply(coin))
-                    .subscribe(this::onNextCoinForView, this::onError);
-        } catch (ExecutionException | InterruptedException e) {
-            onError(e);
-        }
+        databaseRepository.getCoinSingle(coinForView.getId())
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(rawCoin -> apiRepository.getCoin(rawCoin, settingsRepository.getFiatSetting())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .map(coin -> mapper.apply(coin))
+                                .subscribe(this::onNextCoinForView, this::onError),
+                        this::onError);
     }
 
     @SuppressLint("CheckResult")

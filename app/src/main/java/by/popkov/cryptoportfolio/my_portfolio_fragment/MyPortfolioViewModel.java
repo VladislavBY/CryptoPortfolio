@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -84,16 +83,15 @@ class MyPortfolioViewModel extends AndroidViewModel {
         return portfolioInfoForViewMutableLiveData;
     }
 
+    @SuppressLint("CheckResult")
     void updatePortfolioData() {
         setIsLoadingLiveData(true);
-        try {
-            List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
-            apiRepository.getCoinsList(currentCoinListDatabase, settingsRepository.getFiatSetting())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onNextCoinList, this::onError);
-        } catch (ExecutionException | InterruptedException e) {
-            onError(e);
-        }
+        databaseRepository.getCoinListSingle()
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(rawCoinList -> apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::onNextCoinList, this::onError),
+                        this::onError);
     }
 
     @SuppressLint("CheckResult")

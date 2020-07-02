@@ -1,17 +1,15 @@
 package by.popkov.cryptoportfolio.widget;
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.MainActivity;
@@ -44,29 +42,26 @@ public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void setData(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         ApiRepository apiRepository = new ApiRepositoryImp();
         DatabaseRepository databaseRepository = new DatabaseRepositoryImp(context, new CoinMapper());
         SettingsRepository settingsRepository = new SettingsRepositoryImp(context);
         Function<List<Coin>, PortfolioInfo> portfolioInfoMapper = new PortfolioInfoMapper();
         Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper = new PortfolioInfoForViewMapper();
-        try {
-            List<Coin> rawCoinsList = databaseRepository.getCoinListFuture().get();
-            apiRepository.getCoinsList(rawCoinsList, settingsRepository.getFiatSetting())
-                    .map(coinList -> portfolioInfoForViewMapper.apply(portfolioInfoMapper.apply(coinList)))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            portfolioInfoForView -> setDataToView(portfolioInfoForView, context, appWidgetManager, appWidgetId),
-                            throwable -> showThrowable(throwable, context)
-                    );
-        } catch (ExecutionException | InterruptedException e) {
-            if (e.getCause() != null) {
-                showThrowable(e.getCause(), context);
-            }
-        }
+        databaseRepository.getCoinListSingle()
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(
+                        rawCoinList -> apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
+                                .map(coinList -> portfolioInfoForViewMapper.apply(portfolioInfoMapper.apply(coinList)))
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        portfolioInfoForView -> setDataToView(portfolioInfoForView, context, appWidgetManager, appWidgetId),
+                                        this::showThrowable)
+                );
     }
 
-    private void showThrowable(@NotNull Throwable throwable, @NonNull Context context) {
+    private void showThrowable(@NotNull Throwable throwable) {
         throwable.printStackTrace();
     }
 

@@ -11,6 +11,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 
 @Dao
@@ -24,6 +25,9 @@ public interface CoinDao {
     @Query("SELECT * FROM coin")
     Observable<List<CoinEntity>> getAllObservable();
 
+    @Query("SELECT * FROM coin")
+    Single<List<CoinEntity>> getAllSingle();
+
     @Query("SELECT * FROM coin WHERE id =:id")
     LiveData<CoinEntity> getCoinLiveData(String id);
 
@@ -32,6 +36,9 @@ public interface CoinDao {
 
     @Query("SELECT * FROM coin WHERE id =:id")
     Observable<CoinEntity> getCoinObservable(String id);
+
+    @Query("SELECT * FROM coin WHERE id =:id")
+    Single<CoinEntity> getCoinSingle(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CoinEntity coinEntity);

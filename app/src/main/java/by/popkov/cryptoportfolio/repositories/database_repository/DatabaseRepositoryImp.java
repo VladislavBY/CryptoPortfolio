@@ -17,6 +17,8 @@ import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinD
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDatabase;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinEntity;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class DatabaseRepositoryImp implements DatabaseRepository {
     private CoinDao coinDao;
@@ -66,15 +68,35 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
 
     @Override
     public Observable<List<Coin>> getCoinListObservable() {
-        return coinDao.getAllObservable().map(coinEntities ->
-                coinEntities.stream()
-                        .map(mapper)
-                        .collect(Collectors.toList()));
+        return coinDao.getAllObservable()
+                .map(coinEntities ->
+                        coinEntities.stream()
+                                .map(mapper)
+                                .collect(Collectors.toList())
+                );
+    }
+
+    @Override
+    public Single<List<Coin>> getCoinListSingle() {
+        return coinDao.getAllSingle()
+                .subscribeOn(Schedulers.io())
+                .map(coinEntities ->
+                        coinEntities.stream()
+                                .map(mapper)
+                                .collect(Collectors.toList())
+                );
     }
 
     @Override
     public Observable<Coin> getCoinObservable(String id) {
         return coinDao.getCoinObservable(id).map(mapper::apply);
+    }
+
+    @Override
+    public Single<Coin> getCoinSingle(String id) {
+        return coinDao.getCoinSingle(id)
+                .subscribeOn(Schedulers.io())
+                .map(mapper::apply);
     }
 
     @Override
