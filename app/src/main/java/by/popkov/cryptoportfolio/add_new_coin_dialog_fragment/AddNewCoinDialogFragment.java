@@ -52,7 +52,7 @@ public class AddNewCoinDialogFragment extends DialogFragment {
 
     @NotNull
     private Dialog makeDialog() {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_ftagment_add_coin, null, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_add_coin, null, false);
         EditText coinSymbol = view.findViewById(R.id.coinSymbol);
         EditText coinNumber = view.findViewById(R.id.coinNumber);
         return new AlertDialog.Builder(context)
