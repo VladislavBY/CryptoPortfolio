@@ -24,7 +24,7 @@ public class AddNewCoinDialogFragment extends DialogFragment {
     private Context context;
 
     @NotNull
-    public static AddNewCoinDialogFragment getInstance() {
+    public static AddNewCoinDialogFragment newInstance() {
         return new AddNewCoinDialogFragment();
     }
 
@@ -65,7 +65,6 @@ public class AddNewCoinDialogFragment extends DialogFragment {
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-
         return customDialog;
     }
 

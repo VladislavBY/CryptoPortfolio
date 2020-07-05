@@ -80,7 +80,7 @@ public class SettingsFragmentTest {
         @NonNull
         @Override
         public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
-            SettingsFragment fragment = SettingsFragment.getInstance();
+            SettingsFragment fragment = SettingsFragment.newInstance();
             fragment.setViewModelFactoryOptional(ViewModelUtil.createViewModelFactory(settingsFragmentViewModel));
             fragment.setOnUpdateCoinListListenerOptional(onUpdatePortfolioListener);
             fragment.setOnHomeClickListenerOptional(onHomeClickListener);

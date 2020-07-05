@@ -52,7 +52,7 @@ public class SettingsFragment extends Fragment {
     }
 
     @NotNull
-    public static SettingsFragment getInstance() {
+    public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
 

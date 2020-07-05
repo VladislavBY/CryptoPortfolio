@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     @Override
     public void onClickSettings() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, SettingsFragment.getInstance(), SettingsFragment.TAG)
+                .add(R.id.fragmentContainer, SettingsFragment.newInstance(), SettingsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
         startAnimScreenChangeForward();
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     @Override
     public void onItemClick(CoinForView coinForView) {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, CoinInfoFragment.getInstance(coinForView), CoinInfoFragment.TAG)
+                .add(R.id.fragmentContainer, CoinInfoFragment.newInstance(coinForView), CoinInfoFragment.TAG)
                 .addToBackStack(null)
                 .commit();
         startAnimScreenChangeForward();
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
      */
     private void showMyPortfolioFragment() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, MyPortfolioFragment.getInstance(), MyPortfolioFragment.TAG)
+                .add(R.id.fragmentContainer, MyPortfolioFragment.newInstance(), MyPortfolioFragment.TAG)
                 .commit();
     }
 

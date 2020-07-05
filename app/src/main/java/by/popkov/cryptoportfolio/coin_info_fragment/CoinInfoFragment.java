@@ -55,7 +55,7 @@ public class CoinInfoFragment extends Fragment {
     private ProgressBar progressBar;
 
     @NotNull
-    public static CoinInfoFragment getInstance(CoinForView coinForView) {
+    public static CoinInfoFragment newInstance(CoinForView coinForView) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_COIN_FOR_VIEW, coinForView);
         CoinInfoFragment coinInfoFragment = new CoinInfoFragment();

@@ -56,7 +56,7 @@ public class MyPortfolioFragment extends Fragment {
     private SearchView searchCoin;
 
     @NotNull
-    public static MyPortfolioFragment getInstance() {
+    public static MyPortfolioFragment newInstance() {
         return new MyPortfolioFragment();
     }
 
@@ -110,7 +110,7 @@ public class MyPortfolioFragment extends Fragment {
     }
 
     private void setBtnListeners() {
-        addCoinFab.setOnClickListener(v -> AddNewCoinDialogFragment.getInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        addCoinFab.setOnClickListener(v -> AddNewCoinDialogFragment.newInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
         onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
                 settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
