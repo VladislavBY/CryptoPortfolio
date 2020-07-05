@@ -16,11 +16,11 @@ Main used tools:
 ✔ Animations
 
 Screens:
-https://media-exp1.licdn.com/dms/image/C4E2DAQGmcIYn52TEFg/profile-treasury-image-shrink_8192_8192/0?e=1593604800&v=beta&t=HtEUi0Qm-T6MJbrhaBC_PZcdFNUW2Mmoixr472fnY1Q
+https://drive.google.com/file/d/1n8cBYiLNjBwWNHq9n7iQezOxAK1zopCL/view?usp=sharing
 
-https://media-exp1.licdn.com/dms/image/C4E2DAQHlecwSqLBZ1w/profile-treasury-image-shrink_8192_8192/0?e=1593604800&v=beta&t=JDTPYDhsVLrYx1qay2k5uudz05twm74y2qPb14Ea4Vo
+https://drive.google.com/file/d/1LaNnfiCnOXw__Fj7ONRu_CS-b3GLnsFG/view?usp=sharing
 
-https://media-exp1.licdn.com/dms/image/C4E2DAQFa0_fhHJ8yRg/profile-treasury-image-shrink_8192_8192/0?e=1593604800&v=beta&t=G6kLjQmQI-8NzuxmZtlvtwLpwQRjXX4nFTKGXAtRS28
+https://drive.google.com/file/d/1KXKwN28JOxu7RF00tHhVUo34-hEIH-EJ/view?usp=sharing
 
  
 LinkedIn: https://www.linkedin.com/in/vladislav-popkov/
