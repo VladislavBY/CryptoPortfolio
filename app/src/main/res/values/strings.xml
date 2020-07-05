@@ -2,8 +2,8 @@
     <string name="app_name">Crypto Portfolio</string>
     <string name="hint_number">Number</string>
     <string name="hint_symbol">Symbol</string>
-    <string name="add_button">Add</string>
-    <string name="cancel_button">Cancel</string>
+    <string name="positive_button">Add</string>
+    <string name="negative_button">Cancel</string>
     <string name="add_dialog_title">Add new coin</string>
     <string name="my_portfolio_toolbar_text">My portfolio</string>
     <string name="sum_coin_list">Sum:</string>
@@ -23,8 +23,8 @@
     <string name="delete_dialog_negative">Cancel</string>
     <string name="delete_dialog_title">Do you want delete coin from portfolio?</string>
     <string name="portfolio_is_empty">Portfolio is empty</string>
-    <string name="input_new_coin_s_number">Input new coin\'s number</string>
-    <string name="edit_dialog_title">Edit coin\'s number</string>
+    <string name="input_new_number_of_the_coin">Input new number of the coin</string>
+    <string name="edit_dialog_title">Edit number</string>
     <string name="edit_dialog_positive">Edit</string>
     <string name="edit_dialog_negative">Cancel</string>
     <string name="settings_tool_bar_text">Settings</string>

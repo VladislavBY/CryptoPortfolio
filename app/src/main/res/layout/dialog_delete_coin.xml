@@ -17,44 +17,22 @@
             style="@style/CustomDialog.HeadText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_dialog_title"
+            android:gravity="center"
+            android:text="@string/delete_dialog_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/coinSymbolEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_symbol"
-            android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@id/coinNumberEditText"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-        <EditText
-            android:id="@+id/coinNumberEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/defaultMargin"
-            android:hint="@string/hint_number"
-            android:inputType="numberDecimal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toEndOf="@id/coinSymbolEditText"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <Button
             android:id="@+id/negativeBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/defaultMargin"
-            android:text="@string/negative_button"
+            android:text="@string/delete_dialog_negative"
             app:layout_constraintEnd_toStartOf="@id/positiveBtn"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coinSymbolEditText" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <Button
             android:id="@+id/positiveBtn"
@@ -62,12 +40,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
-            android:backgroundTint="@color/add_dialog_btn_color"
-            android:text="@string/positive_button"
+            android:backgroundTint="@color/delete_btn_color"
+            android:text="@string/delete_dialog_positive"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@id/negativeBtn"
-            app:layout_constraintTop_toBottomOf="@id/coinSymbolEditText" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

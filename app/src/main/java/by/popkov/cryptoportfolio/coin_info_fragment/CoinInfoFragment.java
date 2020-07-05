@@ -1,10 +1,14 @@
 package by.popkov.cryptoportfolio.coin_info_fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -113,30 +116,35 @@ public class CoinInfoFragment extends Fragment {
     }
 
     private void showDeleteDialog() {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.delete_dialog_title)
-                .setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
-                    coinInfoFragmentViewModel.deleteCoin();
-                    onHomeClickListenerOptional.ifPresent(OnHomeClickListener::onHomeClick);
-                })
-                .setNeutralButton(R.string.delete_dialog_negative, ((dialog, which) -> {
-                }))
-                .create()
-                .show();
+        Dialog customDeleteDialog = new Dialog(context);
+        customDeleteDialog.setContentView(R.layout.dialog_delete_coin);
+        customDeleteDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
+            coinInfoFragmentViewModel.deleteCoin();
+            onHomeClickListenerOptional.ifPresent(OnHomeClickListener::onHomeClick);
+            customDeleteDialog.dismiss();
+        });
+        customDeleteDialog.findViewById(R.id.negativeBtn).setOnClickListener(v -> customDeleteDialog.dismiss());
+        Window window = customDeleteDialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        customDeleteDialog.show();
     }
 
     private void showEditDialog() {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_edit_dialog, null, false);
-        EditText editText = view.findViewById(R.id.newNumber);
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.edit_dialog_title)
-                .setView(view)
-                .setPositiveButton(R.string.edit_dialog_positive,
-                        (dialog, which) -> coinInfoFragmentViewModel.updateCoin(Double.valueOf(editText.getText().toString())))
-                .setNegativeButton(R.string.edit_dialog_negative, (dialog, which) -> {
-                })
-                .create()
-                .show();
+        Dialog customEditDialog = new Dialog(context);
+        customEditDialog.setContentView(R.layout.dialog_edit_coin);
+        EditText coinNumberEditText = customEditDialog.findViewById(R.id.coinNumberEditText);
+        customEditDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
+            coinInfoFragmentViewModel.updateCoin(Double.valueOf(coinNumberEditText.getText().toString()));
+            customEditDialog.dismiss();
+        });
+        customEditDialog.findViewById(R.id.negativeBtn).setOnClickListener(v -> customEditDialog.dismiss());
+        Window window = customEditDialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        customEditDialog.show();
     }
 
     private void setSwipeRefreshLayout() {

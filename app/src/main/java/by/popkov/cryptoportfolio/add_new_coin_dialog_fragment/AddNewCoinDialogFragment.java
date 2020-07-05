@@ -56,11 +56,11 @@ public class AddNewCoinDialogFragment extends DialogFragment {
         customDialog.setContentView(R.layout.dialog_fragment_custom_add_coin);
         EditText coinSymbolEditText = customDialog.findViewById(R.id.coinSymbolEditText);
         EditText coinNumberEditText = customDialog.findViewById(R.id.coinNumberEditText);
-        customDialog.findViewById(R.id.addBtn).setOnClickListener(v -> {
+        customDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
             saveNewCoin(coinSymbolEditText.getText().toString(), coinNumberEditText.getText().toString());
             customDialog.dismiss();
         });
-        customDialog.findViewById(R.id.cancelBtn).setOnClickListener(v -> customDialog.dismiss());
+        customDialog.findViewById(R.id.negativeBtn).setOnClickListener(v -> customDialog.dismiss());
         Window window = customDialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

@@ -3,8 +3,8 @@
     <string name="app_name">Крипто Портфель</string>
     <string name="hint_number">Количество</string>
     <string name="hint_symbol">Символ</string>
-    <string name="add_button">Добавить</string>
-    <string name="cancel_button">Отмена</string>
+    <string name="positive_button">Добавить</string>
+    <string name="negative_button">Отмена</string>
     <string name="add_dialog_title">Добавить монету</string>
     <string name="my_portfolio_toolbar_text">Мой портфель</string>
     <string name="sum_coin_list">Сум:</string>
@@ -24,7 +24,7 @@
     <string name="delete_dialog_negative">Отменить</string>
     <string name="delete_dialog_title">Хотите удалить монету из портфеля?</string>
     <string name="portfolio_is_empty">Портфель пустой</string>
-    <string name="input_new_coin_s_number">Введите новое количество монет</string>
+    <string name="input_new_number_of_the_coin">Введите новое количество монет</string>
     <string name="edit_dialog_title">Изменить количество монет</string>
     <string name="edit_dialog_positive">Изменить</string>
     <string name="edit_dialog_negative">Отменить</string>

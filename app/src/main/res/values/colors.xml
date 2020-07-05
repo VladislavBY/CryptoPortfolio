@@ -19,5 +19,6 @@
     <color name="widget_portfolio_info_text_color">#FFFFFF</color>
     <color name="shadow_color">#6C6C6C</color>
     <color name="add_coin_dialog_background">#FFC107</color>
+    <color name="add_dialog_btn_color">#FF0C6E01</color>
 
 </resources>
