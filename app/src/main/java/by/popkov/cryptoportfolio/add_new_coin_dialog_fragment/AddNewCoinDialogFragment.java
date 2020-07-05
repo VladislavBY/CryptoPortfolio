@@ -53,7 +53,7 @@ public class AddNewCoinDialogFragment extends DialogFragment {
     @NotNull
     private Dialog makeDialog() {
         Dialog customDialog = new Dialog(context);
-        customDialog.setContentView(R.layout.dialog_fragment_custom_add_coin);
+        customDialog.setContentView(R.layout.dialog_fragment_add_coin);
         EditText coinSymbolEditText = customDialog.findViewById(R.id.coinSymbolEditText);
         EditText coinNumberEditText = customDialog.findViewById(R.id.coinNumberEditText);
         customDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
