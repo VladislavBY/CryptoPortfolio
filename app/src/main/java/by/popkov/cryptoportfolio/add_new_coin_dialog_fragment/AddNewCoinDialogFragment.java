@@ -2,14 +2,14 @@ package by.popkov.cryptoportfolio.add_new_coin_dialog_fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,8 +31,8 @@ public class AddNewCoinDialogFragment extends DialogFragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        this.context = context;
         super.onAttach(context);
+        this.context = context;
     }
 
     @NonNull
@@ -52,21 +52,30 @@ public class AddNewCoinDialogFragment extends DialogFragment {
 
     @NotNull
     private Dialog makeDialog() {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_add_coin, null, false);
-        EditText coinSymbol = view.findViewById(R.id.coinSymbol);
-        EditText coinNumber = view.findViewById(R.id.coinNumber);
-        return new AlertDialog.Builder(context)
-                .setView(view)
-                .setTitle(R.string.add_dialog_title)
-                .setPositiveButton(R.string.add_button, (dialog, which) ->
-                        onPositiveButtonClick(coinSymbol.getText().toString(),
-                                coinNumber.getText().toString()))
-                .setNeutralButton(R.string.cancel_button, (dialog, which) -> {
-                })
-                .create();
+        Dialog customDialog = new Dialog(context);
+        customDialog.setContentView(R.layout.dialog_fragment_custom_add_coin);
+        EditText coinSymbolEditText = customDialog.findViewById(R.id.coinSymbolEditText);
+        EditText coinNumberEditText = customDialog.findViewById(R.id.coinNumberEditText);
+        customDialog.findViewById(R.id.addBtn).setOnClickListener(v -> {
+            saveNewCoin(coinSymbolEditText.getText().toString(), coinNumberEditText.getText().toString());
+            customDialog.dismiss();
+        });
+        customDialog.findViewById(R.id.cancelBtn).setOnClickListener(v -> customDialog.dismiss());
+        Window window = customDialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        return customDialog;
     }
 
-    private void onPositiveButtonClick(String symbol, String number) {
+    private void saveNewCoin(String symbol, String number) {
         addNewCoinDialogFragmentViewModel.saveCoin(symbol, number);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        context = null;
     }
 }

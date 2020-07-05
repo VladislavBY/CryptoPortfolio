@@ -23,4 +23,13 @@
     <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
         <item name="android:backgroundTint">@color/edit_text_background_tint</item>
     </style>
+
+    <style name="CustomDialog" parent="AppTheme">
+        <item name="android:backgroundTint">@color/add_coin_dialog_background</item>
+        <item name="cardCornerRadius">10dp</item>
+    </style>
+
+    <style name="CustomDialog.HeadText">
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>
