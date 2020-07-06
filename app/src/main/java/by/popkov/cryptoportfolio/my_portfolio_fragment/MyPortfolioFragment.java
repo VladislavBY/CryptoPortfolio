@@ -110,7 +110,8 @@ public class MyPortfolioFragment extends Fragment {
     }
 
     private void setBtnListeners() {
-        addCoinFab.setOnClickListener(v -> AddNewCoinDialogFragment.newInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        addCoinFab.setOnClickListener(v ->
+                AddNewCoinDialogFragment.newInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
         onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
                 settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
