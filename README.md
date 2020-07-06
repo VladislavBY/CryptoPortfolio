@@ -22,5 +22,7 @@ https://drive.google.com/file/d/1LaNnfiCnOXw__Fj7ONRu_CS-b3GLnsFG/view?usp=shari
 
 https://drive.google.com/file/d/1KXKwN28JOxu7RF00tHhVUo34-hEIH-EJ/view?usp=sharing
 
+https://drive.google.com/file/d/1PyuxiKrlfTjk9Q2sVEyr5AEBkG3f4olI/view?usp=sharing
+
  
 LinkedIn: https://www.linkedin.com/in/vladislav-popkov/
