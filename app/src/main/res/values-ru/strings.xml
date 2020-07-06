@@ -24,7 +24,7 @@
     <string name="delete_dialog_negative">Отменить</string>
     <string name="delete_dialog_title">Хотите удалить монету из портфеля?</string>
     <string name="portfolio_is_empty">Портфель пустой</string>
-    <string name="input_new_number_of_the_coin">Введите новое количество монет</string>
+    <string name="input_new_number_of_the_coin">Новое количество</string>
     <string name="edit_dialog_title">Изменить количество монет</string>
     <string name="edit_dialog_positive">Изменить</string>
     <string name="edit_dialog_negative">Отменить</string>
