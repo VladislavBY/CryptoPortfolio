@@ -1,4 +1,6 @@
-Android course project. I developed an Android cryptocurrency application. Its name and main idea is "Crypto Portfolio". My mobile app helps to count and track your crypto assets in real time. Development is continued after end on the course.
+Android course project. 
+I'm cryptocurrency enthusiast, so I developed an application, whose name and main idea is "Crypto Portfolio". The app counts and tracks cryptoassets for you in real time.
+Development is continued after end on the course.
 Main used tools:
 
 ✔ Java
