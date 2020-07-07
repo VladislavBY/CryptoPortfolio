@@ -1,4 +1,5 @@
 Android course project. 
+
 I'm cryptocurrency enthusiast, so I developed an application, whose name and main idea is "Crypto Portfolio". The app counts and tracks cryptoassets for you in real time.
 Development is continued after end on the course.
 Main used tools:
