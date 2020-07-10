@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +22,7 @@ import org.jetbrains.annotations.TestOnly;
 
 import java.util.Optional;
 
-import by.popkov.cryptoportfolio.OnHomeClickListener;
+import by.popkov.cryptoportfolio.OnBackClickListener;
 import by.popkov.cryptoportfolio.R;
 
 import static by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp.BTC;
@@ -37,12 +40,13 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
-    private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
+    private Optional<OnBackClickListener> onBackClickListenerOptional = Optional.empty();
     private Optional<OnUpdatePortfolioListener> onUpdatePortfolioListenerOptional = Optional.empty();
     private Context context;
     private Optional<ViewModelProvider.Factory> viewModelFactoryOptional = Optional.empty();
     private SettingsFragmentViewModel settingsFragmentViewModel;
 
+    private ScrollView rootLayout;
     private RadioGroup selectedSymbol;
     private RadioGroup selectedSortType;
     private ImageButton homeBtn;
@@ -59,7 +63,7 @@ public class SettingsFragment extends Fragment {
     /**
      * !onHomeClickListenerOptional.isPresent() and !onUpdatePortfolioListenerOptional.isPresent()
      * for check is testing (with mock) or no
-     * {@link #setOnHomeClickListenerOptional} {@link #setOnUpdateCoinListListenerOptional}
+     * {@link #setOnBackClickListenerOptional} {@link #setOnUpdateCoinListListenerOptional}
      *
      * @param context context
      */
@@ -67,8 +71,8 @@ public class SettingsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        if (!onHomeClickListenerOptional.isPresent() && context instanceof OnHomeClickListener) {
-            onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
+        if (!onBackClickListenerOptional.isPresent() && context instanceof OnBackClickListener) {
+            onBackClickListenerOptional = Optional.of((OnBackClickListener) context);
         }
         if (!onUpdatePortfolioListenerOptional.isPresent() && context instanceof OnUpdatePortfolioListener) {
             onUpdatePortfolioListenerOptional = Optional.of((OnUpdatePortfolioListener) context);
@@ -102,6 +106,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initViews(@NotNull View view) {
+        rootLayout = view.findViewById(R.id.rootLayout);
+        setOpenAnimation();
         selectedSortType = view.findViewById(R.id.selectedSortType);
         setCheckedSortType(view);
         setSelectedSortTypeChangeListener();
@@ -109,7 +115,11 @@ public class SettingsFragment extends Fragment {
         setCheckedSymbol(view);
         setSelectedSymbolChangeListener();
         homeBtn = view.findViewById(R.id.homeBtn);
-        setHomeBtnListener();
+        setBackBtnListener();
+    }
+
+    private void setOpenAnimation() {
+        rootLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.screen_change_forward));
     }
 
     private void setCheckedSortType(View view) {
@@ -211,15 +221,34 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    private void setHomeBtnListener() {
-        onHomeClickListenerOptional.ifPresent(onHomeClickListener ->
-                homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick()));
+    private void setBackBtnListener() {
+        onBackClickListenerOptional.ifPresent(onBackClickListener ->
+                homeBtn.setOnClickListener(v -> backWithAnimation(onBackClickListener)));
+    }
+
+    private void backWithAnimation(OnBackClickListener onBackClickListener) {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.screen_change_backward);
+        rootLayout.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                onBackClickListener.onBackClick();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onHomeClickListenerOptional = Optional.empty();
+        onBackClickListenerOptional = Optional.empty();
         onUpdatePortfolioListenerOptional = Optional.empty();
         context = null;
     }
@@ -230,8 +259,8 @@ public class SettingsFragment extends Fragment {
     }
 
     @TestOnly
-    void setOnHomeClickListenerOptional(OnHomeClickListener onHomeClickListener) {
-        onHomeClickListenerOptional = Optional.of(onHomeClickListener);
+    void setOnBackClickListenerOptional(OnBackClickListener onBackClickListener) {
+        onBackClickListenerOptional = Optional.of(onBackClickListener);
     }
 
     @TestOnly

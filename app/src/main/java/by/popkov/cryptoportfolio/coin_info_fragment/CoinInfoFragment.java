@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import by.popkov.cryptoportfolio.OnHomeClickListener;
+import by.popkov.cryptoportfolio.OnBackClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
@@ -36,7 +38,7 @@ public class CoinInfoFragment extends Fragment {
     public static final String TAG = "CoinInfoFragment";
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
 
-    private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
+    private Optional<OnBackClickListener> onBackClickListenerOptional = Optional.empty();
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
@@ -70,8 +72,8 @@ public class CoinInfoFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        if (context instanceof OnHomeClickListener) {
-            onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
+        if (context instanceof OnBackClickListener) {
+            onBackClickListenerOptional = Optional.of((OnBackClickListener) context);
         }
     }
 
@@ -104,15 +106,41 @@ public class CoinInfoFragment extends Fragment {
         deleteBtn = view.findViewById(R.id.deleteBtn);
         homeBtn = view.findViewById(R.id.homeBtn);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        setOpenAnimation();
         progressBar = view.findViewById(R.id.progressBar);
         setBtnListeners();
         setSwipeRefreshLayout();
     }
 
+    private void setOpenAnimation() {
+        swipeRefreshLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.screen_change_forward));
+    }
+
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
         editBtn.setOnClickListener(v -> showEditDialog());
-        onHomeClickListenerOptional.ifPresent(onHomeClickListener -> homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick()));
+        onBackClickListenerOptional.ifPresent(onBackClickListener -> homeBtn.setOnClickListener(
+                v -> backWithAnimation(onBackClickListener)
+        ));
+    }
+
+    private void backWithAnimation(OnBackClickListener onBackClickListener) {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.screen_change_backward);
+        swipeRefreshLayout.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                onBackClickListener.onBackClick();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     private void showDeleteDialog() {
@@ -120,7 +148,7 @@ public class CoinInfoFragment extends Fragment {
         customDeleteDialog.setContentView(R.layout.dialog_delete_coin);
         customDeleteDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
             coinInfoFragmentViewModel.deleteCoin();
-            onHomeClickListenerOptional.ifPresent(OnHomeClickListener::onHomeClick);
+            onBackClickListenerOptional.ifPresent(OnBackClickListener::onBackClick);
             customDeleteDialog.dismiss();
         });
         customDeleteDialog.findViewById(R.id.negativeBtn).setOnClickListener(v -> customDeleteDialog.dismiss());
@@ -199,7 +227,7 @@ public class CoinInfoFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onHomeClickListenerOptional = Optional.empty();
+        onBackClickListenerOptional = Optional.empty();
         context = null;
     }
 }

@@ -1,7 +1,6 @@
 package by.popkov.cryptoportfolio;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -12,21 +11,18 @@ import by.popkov.cryptoportfolio.my_portfolio_fragment.CoinListAdapter;
 import by.popkov.cryptoportfolio.my_portfolio_fragment.MyPortfolioFragment;
 import by.popkov.cryptoportfolio.settings_fragment.SettingsFragment;
 
-import static android.view.animation.AnimationUtils.loadAnimation;
-
 /**
  * Apps base activity.
  */
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
-        OnHomeClickListener, MyPortfolioFragment.OnSettingsBtnClickListener, SettingsFragment.OnUpdatePortfolioListener {
+        OnBackClickListener, MyPortfolioFragment.OnSettingsBtnClickListener, SettingsFragment.OnUpdatePortfolioListener {
 
     /**
-     * Implements {@link OnHomeClickListener} for back navigational btn.
+     * Implements {@link OnBackClickListener} for back navigational btn.
      */
     @Override
-    public void onHomeClick() {
+    public void onBackClick() {
         getSupportFragmentManager().popBackStack();
-        startAnimScreenChangeBackward();
     }
 
     /**
@@ -38,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
                 .add(R.id.fragmentContainer, SettingsFragment.newInstance(), SettingsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
-        startAnimScreenChangeForward();
     }
 
     /**
@@ -51,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
                 .add(R.id.fragmentContainer, CoinInfoFragment.newInstance(coinForView), CoinInfoFragment.TAG)
                 .addToBackStack(null)
                 .commit();
-        startAnimScreenChangeForward();
     }
 
     /**
@@ -65,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
         }
     }
 
-    private FrameLayout fragmentContainer;
-
     /**
      * At first Create call {@link #showMyPortfolioFragment()}
      *
@@ -79,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
         if (savedInstanceState == null) {
             showMyPortfolioFragment();
         }
-        fragmentContainer = findViewById(R.id.fragmentContainer);
     }
 
     /**
@@ -89,19 +80,5 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragmentContainer, MyPortfolioFragment.newInstance(), MyPortfolioFragment.TAG)
                 .commit();
-    }
-
-    /**
-     * Starts animation for forward navigation on {@link #fragmentContainer}
-     */
-    private void startAnimScreenChangeForward() {
-        fragmentContainer.startAnimation(loadAnimation(this, R.anim.screen_change_forward));
-    }
-
-    /**
-     * Starts animation for backward navigation on {@link #fragmentContainer}
-     */
-    private void startAnimScreenChangeBackward() {
-        fragmentContainer.startAnimation(loadAnimation(this, R.anim.screen_change_backward));
     }
 }

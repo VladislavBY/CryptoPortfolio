@@ -7,7 +7,7 @@ import androidx.test.espresso.action.ViewActions;
 
 import org.junit.Test;
 
-import by.popkov.cryptoportfolio.OnHomeClickListener;
+import by.popkov.cryptoportfolio.OnBackClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
@@ -27,7 +27,7 @@ public class SettingsFragmentTest {
 
     private SettingsFragmentViewModel settingsFragmentViewModel = mock(SettingsFragmentViewModel.class);
     private OnUpdatePortfolioListener onUpdatePortfolioListener = mock(OnUpdatePortfolioListener.class);
-    private OnHomeClickListener onHomeClickListener = mock(OnHomeClickListener.class);
+    private OnBackClickListener onBackClickListener = mock(OnBackClickListener.class);
     private static final String SYMBOL_FOR_LAUNCH = ApiRepositoryImp.EUR;
     private static final String SORT_TYPE_FOR_LAUNCH = SettingsRepositoryImp.SUM_SORT;
     private static final String SYMBOL_FOR_CHANGE = ApiRepositoryImp.RUB;
@@ -67,7 +67,7 @@ public class SettingsFragmentTest {
     public void whenClickOnHomeBtnThenOnHomeClickListenerPerform() {
         launchFragment();
         onView(withId(R.id.homeBtn)).perform(ViewActions.click());
-        verify(onHomeClickListener, times(1)).onHomeClick();
+        verify(onBackClickListener, times(1)).onBackClick();
     }
 
     private void launchFragment() {
@@ -83,7 +83,7 @@ public class SettingsFragmentTest {
             SettingsFragment fragment = SettingsFragment.newInstance();
             fragment.setViewModelFactoryOptional(ViewModelUtil.createViewModelFactory(settingsFragmentViewModel));
             fragment.setOnUpdateCoinListListenerOptional(onUpdatePortfolioListener);
-            fragment.setOnHomeClickListenerOptional(onHomeClickListener);
+            fragment.setOnBackClickListenerOptional(onBackClickListener);
             return fragment;
         }
     }
