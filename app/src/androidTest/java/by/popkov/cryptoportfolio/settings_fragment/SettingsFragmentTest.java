@@ -3,11 +3,19 @@ package by.popkov.cryptoportfolio.settings_fragment;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.Navigation;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import by.popkov.cryptoportfolio.OnBackClickListener;
+
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
@@ -17,16 +25,15 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static by.popkov.cryptoportfolio.settings_fragment.SettingsFragment.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(AndroidJUnit4.class)
 public class SettingsFragmentTest {
 
     private SettingsFragmentViewModel settingsFragmentViewModel = mock(SettingsFragmentViewModel.class);
-    private OnBackClickListener onBackClickListener = mock(OnBackClickListener.class);
     private static final String SYMBOL_FOR_LAUNCH = ApiRepositoryImp.EUR;
     private static final String SORT_TYPE_FOR_LAUNCH = SettingsRepositoryImp.SUM_SORT;
     private static final String SYMBOL_FOR_CHANGE = ApiRepositoryImp.RUB;
@@ -60,17 +67,20 @@ public class SettingsFragmentTest {
         verify(settingsFragmentViewModel, times(1)).saveFiatSetting(SYMBOL_FOR_CHANGE);
     }
 
-    @Test
-    public void whenClickOnHomeBtnThenOnHomeClickListenerPerform() {
-        launchFragment();
-        onView(withId(R.id.homeBtn)).perform(ViewActions.click());
-        verify(onBackClickListener, times(1)).onBackClick();
-    }
+//    @Test
+//    public void testNavigationToMyPortfolioFragment() {
+//        TestNavHostController navHostController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+//        navHostController.setGraph(R.navigation.app_navigation);
+//        FragmentScenario<SettingsFragment> fragmentScenario = launchFragment();
+//        fragmentScenario.onFragment(fragment -> Navigation.setViewNavController(fragment.requireView(), navHostController));
+//        onView(withId(R.id.homeBtn)).perform(ViewActions.click());
+//        Assert.assertEquals(navHostController.getCurrentDestination().getId(), R.id.settingsFragment);
+//    }
 
-    private void launchFragment() {
+    private FragmentScenario<SettingsFragment> launchFragment() {
         when(settingsFragmentViewModel.getFiatSettings()).thenReturn(SYMBOL_FOR_LAUNCH);
         when(settingsFragmentViewModel.getSortSettings()).thenReturn(SORT_TYPE_FOR_LAUNCH);
-        launchInContainer(SettingsFragment.class, null, new SettingsFragmentFactory());
+        return launchInContainer(SettingsFragment.class, null, new SettingsFragmentFactory());
     }
 
     private class SettingsFragmentFactory extends FragmentFactory {

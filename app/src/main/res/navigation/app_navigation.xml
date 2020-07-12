@@ -28,27 +28,11 @@
     <fragment
         android:id="@+id/coinInfoFragment"
         android:name="by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment"
-        android:label="CoinInfoFragment">
-        <action
-            android:id="@+id/action_coinInfoFragment_to_myPortfolioFragment"
-            app:destination="@id/myPortfolioFragment"
-            app:enterAnim="@anim/enter_anim"
-            app:exitAnim="@anim/exit_anim"
-            app:popEnterAnim="@anim/pop_enter_anim"
-            app:popExitAnim="@anim/pop_exit_anim" />
-    </fragment>
+        android:label="CoinInfoFragment"/>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="by.popkov.cryptoportfolio.settings_fragment.SettingsFragment"
-        android:label="SettingsFragment">
-        <action
-            android:id="@+id/action_settingsFragment_to_myPortfolioFragment"
-            app:destination="@id/myPortfolioFragment"
-            app:enterAnim="@anim/enter_anim"
-            app:exitAnim="@anim/exit_anim"
-            app:popEnterAnim="@anim/pop_enter_anim"
-            app:popExitAnim="@anim/pop_exit_anim" />
-    </fragment>
+        android:label="SettingsFragment"/>
     <dialog
         android:id="@+id/addNewCoinDialogFragment"
         android:name="by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFragment"
