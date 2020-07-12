@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class ViewModelUtil {
-    public static <T extends ViewModel> ViewModelProvider.Factory createViewModelFactory(T model) {
+class ViewModelUtil {
+    static <T extends ViewModel> ViewModelProvider.Factory createViewModelFactory(T model) {
         return new ViewModelProvider.Factory() {
             @NonNull
             @Override
