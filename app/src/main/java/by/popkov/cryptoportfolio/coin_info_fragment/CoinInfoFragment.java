@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -36,9 +38,8 @@ import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment {
     public static final String TAG = "CoinInfoFragment";
-    private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
+    public static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
 
-    private Optional<OnBackClickListener> onBackClickListenerOptional = Optional.empty();
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
@@ -59,22 +60,10 @@ public class CoinInfoFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
 
-    @NotNull
-    public static CoinInfoFragment newInstance(CoinForView coinForView) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_COIN_FOR_VIEW, coinForView);
-        CoinInfoFragment coinInfoFragment = new CoinInfoFragment();
-        coinInfoFragment.setArguments(bundle);
-        return coinInfoFragment;
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        if (context instanceof OnBackClickListener) {
-            onBackClickListenerOptional = Optional.of((OnBackClickListener) context);
-        }
     }
 
     @Nullable
@@ -106,41 +95,15 @@ public class CoinInfoFragment extends Fragment {
         deleteBtn = view.findViewById(R.id.deleteBtn);
         homeBtn = view.findViewById(R.id.homeBtn);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        setOpenAnimation();
         progressBar = view.findViewById(R.id.progressBar);
         setBtnListeners();
         setSwipeRefreshLayout();
     }
 
-    private void setOpenAnimation() {
-        swipeRefreshLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.screen_change_forward));
-    }
-
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
         editBtn.setOnClickListener(v -> showEditDialog());
-        onBackClickListenerOptional.ifPresent(onBackClickListener -> homeBtn.setOnClickListener(
-                v -> backWithAnimation(onBackClickListener)
-        ));
-    }
-
-    private void backWithAnimation(OnBackClickListener onBackClickListener) {
-        Animation animation = AnimationUtils.loadAnimation(context, R.anim.screen_change_backward);
-        swipeRefreshLayout.startAnimation(animation);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                onBackClickListener.onBackClick();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
+        homeBtn.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
     }
 
     private void showDeleteDialog() {
@@ -148,8 +111,8 @@ public class CoinInfoFragment extends Fragment {
         customDeleteDialog.setContentView(R.layout.dialog_delete_coin);
         customDeleteDialog.findViewById(R.id.positiveBtn).setOnClickListener(v -> {
             coinInfoFragmentViewModel.deleteCoin();
-            onBackClickListenerOptional.ifPresent(OnBackClickListener::onBackClick);
             customDeleteDialog.dismiss();
+            NavHostFragment.findNavController(this).popBackStack();
         });
         customDeleteDialog.findViewById(R.id.negativeBtn).setOnClickListener(v -> customDeleteDialog.dismiss());
         Window window = customDeleteDialog.getWindow();
@@ -227,7 +190,6 @@ public class CoinInfoFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onBackClickListenerOptional = Optional.empty();
         context = null;
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/myPortfolioFragment">
+    <fragment
+        android:id="@+id/myPortfolioFragment"
+        android:name="by.popkov.cryptoportfolio.my_portfolio_fragment.MyPortfolioFragment"
+        android:label="MyPortfolioFragment">
+        <action
+            android:id="@+id/action_myPortfolioFragment_to_coinInfoFragment"
+            app:destination="@id/coinInfoFragment" />
+        <action
+            android:id="@+id/action_myPortfolioFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_myPortfolioFragment_to_addNewCoinDialogFragment"
+            app:destination="@id/addNewCoinDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coinInfoFragment"
+        android:name="by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment"
+        android:label="CoinInfoFragment">
+        <action
+            android:id="@+id/action_coinInfoFragment_to_myPortfolioFragment"
+            app:destination="@id/myPortfolioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="by.popkov.cryptoportfolio.settings_fragment.SettingsFragment"
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/action_settingsFragment_to_myPortfolioFragment"
+            app:destination="@id/myPortfolioFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/addNewCoinDialogFragment"
+        android:name="by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFragment"
+        android:label="AddNewCoinDialogFragment" />
+</navigation>

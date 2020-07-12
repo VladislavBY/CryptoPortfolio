@@ -40,6 +40,7 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
+    public static Boolean needUpdatePortfolio = false;
     private Optional<OnBackClickListener> onBackClickListenerOptional = Optional.empty();
     private Optional<OnUpdatePortfolioListener> onUpdatePortfolioListenerOptional = Optional.empty();
     private Context context;
@@ -149,7 +150,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveSortSetting(SUM_SORT);
                     break;
             }
-            onUpdatePortfolioListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
+            needUpdatePortfolio = true;
         });
     }
 
@@ -216,7 +217,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveFiatSetting(ETH);
                     break;
             }
-            onUpdatePortfolioListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
+            needUpdatePortfolio = true;
         });
     }
 

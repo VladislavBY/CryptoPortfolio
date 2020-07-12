@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,24 +28,15 @@ import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
+import by.popkov.cryptoportfolio.settings_fragment.SettingsFragment;
 
 public class MyPortfolioFragment extends Fragment {
-    public interface OnSettingsBtnClickListener {
-        void onClickSettings();
-    }
-
     public static String TAG = "MyPortfolioFragment";
-
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
-    private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
-    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
-
-    private RecyclerView coinListRecyclerView;
     private FloatingActionButton addCoinFab;
     private ImageButton settingsImageButton;
     private TextView sumTextView;
@@ -55,21 +47,10 @@ public class MyPortfolioFragment extends Fragment {
     private TextView portfolioIsEmpty;
     private SearchView searchCoin;
 
-    @NotNull
-    public static MyPortfolioFragment newInstance() {
-        return new MyPortfolioFragment();
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        if (context instanceof CoinListAdapter.OnCoinListClickListener) {
-            onCoinListClickListenerOptional = Optional.of((CoinListAdapter.OnCoinListClickListener) context);
-        }
-        if (context instanceof OnSettingsBtnClickListener) {
-            onSettingsBtnClickListenerOptional = Optional.of((OnSettingsBtnClickListener) context);
-        }
     }
 
     @Nullable
@@ -84,12 +65,15 @@ public class MyPortfolioFragment extends Fragment {
         initRecyclerView(view);
         initViews(view);
         initViewModel();
+        if (myPortfolioViewModel != null && SettingsFragment.needUpdatePortfolio) {
+            myPortfolioViewModel.updatePortfolioData();
+            SettingsFragment.needUpdatePortfolio = false;
+        }
     }
 
     private void initRecyclerView(@NotNull View view) {
-        coinListRecyclerView = view.findViewById(R.id.coinListRecyclerView);
-        onCoinListClickListenerOptional.ifPresent(onCoinListClickListener ->
-                coinListRecyclerView.setAdapter(new CoinListAdapter(onCoinListClickListener)));
+        RecyclerView coinListRecyclerView = view.findViewById(R.id.coinListRecyclerView);
+        coinListRecyclerView.setAdapter(new CoinListAdapter());
         coinListRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         coinListAdapterOptional = Optional.ofNullable((CoinListAdapter) coinListRecyclerView.getAdapter());
     }
@@ -111,9 +95,13 @@ public class MyPortfolioFragment extends Fragment {
 
     private void setBtnListeners() {
         addCoinFab.setOnClickListener(v ->
-                AddNewCoinDialogFragment.newInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
-        onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
-                settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
+                Navigation
+                        .findNavController(v)
+                        .navigate(MyPortfolioFragmentDirections.actionMyPortfolioFragmentToAddNewCoinDialogFragment()));
+        settingsImageButton.setOnClickListener(v ->
+                Navigation
+                        .findNavController(v)
+                        .navigate(MyPortfolioFragmentDirections.actionMyPortfolioFragmentToSettingsFragment()));
     }
 
     private void setSwipeRefreshLayoutListener() {
@@ -196,7 +184,27 @@ public class MyPortfolioFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onCoinListClickListenerOptional = Optional.empty();
         context = null;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
+
