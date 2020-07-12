@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 public class SettingsFragmentTest {
 
     private SettingsFragmentViewModel settingsFragmentViewModel = mock(SettingsFragmentViewModel.class);
-    private OnUpdatePortfolioListener onUpdatePortfolioListener = mock(OnUpdatePortfolioListener.class);
     private OnBackClickListener onBackClickListener = mock(OnBackClickListener.class);
     private static final String SYMBOL_FOR_LAUNCH = ApiRepositoryImp.EUR;
     private static final String SORT_TYPE_FOR_LAUNCH = SettingsRepositoryImp.SUM_SORT;
@@ -51,7 +50,6 @@ public class SettingsFragmentTest {
         onView(withId(R.id.sortByAlphabet)).perform(ViewActions.click());
         onView(withId(R.id.sortByAlphabet)).check(matches(isChecked()));
         verify(settingsFragmentViewModel, times(1)).saveSortSetting(SORT_TYPE_FOR_CHANGE);
-        verify(onUpdatePortfolioListener, times(1)).onUpdatePortfolio();
     }
 
     @Test
@@ -60,7 +58,6 @@ public class SettingsFragmentTest {
         onView(withId(R.id.rub)).perform(ViewActions.click());
         onView(withId(R.id.rub)).check(matches(isChecked()));
         verify(settingsFragmentViewModel, times(1)).saveFiatSetting(SYMBOL_FOR_CHANGE);
-        verify(onUpdatePortfolioListener, times(1)).onUpdatePortfolio();
     }
 
     @Test
@@ -80,10 +77,8 @@ public class SettingsFragmentTest {
         @NonNull
         @Override
         public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
-            SettingsFragment fragment = SettingsFragment.newInstance();
+            SettingsFragment fragment = new SettingsFragment();
             fragment.setViewModelFactoryOptional(ViewModelUtil.createViewModelFactory(settingsFragmentViewModel));
-            fragment.setOnUpdateCoinListListenerOptional(onUpdatePortfolioListener);
-            fragment.setOnBackClickListenerOptional(onBackClickListener);
             return fragment;
         }
     }

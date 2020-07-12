@@ -18,16 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import by.popkov.cryptoportfolio.R;
 
 public class AddNewCoinDialogFragment extends DialogFragment {
-    public static final String TAG = "AddNewCoinDialogFragment";
-
     private AddNewCoinDialogFragmentViewModel addNewCoinDialogFragmentViewModel;
     private Context context;
-
-    @NotNull
-    public static AddNewCoinDialogFragment newInstance() {
-        return new AddNewCoinDialogFragment();
-    }
-
 
     @Override
     public void onAttach(@NonNull Context context) {

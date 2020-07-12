@@ -33,7 +33,6 @@ import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 import by.popkov.cryptoportfolio.settings_fragment.SettingsFragment;
 
 public class MyPortfolioFragment extends Fragment {
-    public static String TAG = "MyPortfolioFragment";
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
@@ -65,6 +64,10 @@ public class MyPortfolioFragment extends Fragment {
         initRecyclerView(view);
         initViews(view);
         initViewModel();
+        checkUpdate();
+    }
+
+    private void checkUpdate() {
         if (myPortfolioViewModel != null && SettingsFragment.needUpdatePortfolio) {
             myPortfolioViewModel.updatePortfolioData();
             SettingsFragment.needUpdatePortfolio = false;
@@ -111,7 +114,7 @@ public class MyPortfolioFragment extends Fragment {
         });
     }
 
-    public void updatePortfolioData() {
+    private void updatePortfolioData() {
         myPortfolioViewModel.updatePortfolioData();
     }
 
@@ -185,26 +188,6 @@ public class MyPortfolioFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         context = null;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }
 

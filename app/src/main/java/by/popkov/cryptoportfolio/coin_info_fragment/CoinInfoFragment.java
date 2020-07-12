@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,20 +28,15 @@ import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
-import by.popkov.cryptoportfolio.OnBackClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment {
-    public static final String TAG = "CoinInfoFragment";
     public static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
 
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
-
     private TextView coinSymbol;
     private TextView coinNumberData;
     private TextView coinSumData;
