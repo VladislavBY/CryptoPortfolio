@@ -4,27 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.navigation.NavBackStackEntry;
-import androidx.navigation.Navigation;
-import androidx.navigation.testing.TestNavHostController;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 
-import static androidx.fragment.app.testing.FragmentScenario.*;
+import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -66,16 +60,6 @@ public class SettingsFragmentTest {
         onView(withId(R.id.rub)).check(matches(isChecked()));
         verify(settingsFragmentViewModel, times(1)).saveFiatSetting(SYMBOL_FOR_CHANGE);
     }
-
-//    @Test
-//    public void testNavigationToMyPortfolioFragment() {
-//        TestNavHostController navHostController = new TestNavHostController(ApplicationProvider.getApplicationContext());
-//        navHostController.setGraph(R.navigation.app_navigation);
-//        FragmentScenario<SettingsFragment> fragmentScenario = launchFragment();
-//        fragmentScenario.onFragment(fragment -> Navigation.setViewNavController(fragment.requireView(), navHostController));
-//        onView(withId(R.id.homeBtn)).perform(ViewActions.click());
-//        Assert.assertEquals(navHostController.getCurrentDestination().getId(), R.id.settingsFragment);
-//    }
 
     private FragmentScenario<SettingsFragment> launchFragment() {
         when(settingsFragmentViewModel.getFiatSettings()).thenReturn(SYMBOL_FOR_LAUNCH);

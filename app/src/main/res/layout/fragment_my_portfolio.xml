@@ -127,6 +127,7 @@
             android:backgroundTint="@color/fab_background_color"
             android:src="@drawable/ic_add_black_24dp"
             android:tint="@color/fab_icon_color"
+            android:theme="@style/AppTheme"
             app:fabSize="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
