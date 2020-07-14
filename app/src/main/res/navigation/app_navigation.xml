@@ -28,7 +28,11 @@
     <fragment
         android:id="@+id/coinInfoFragment"
         android:name="by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment"
-        android:label="CoinInfoFragment"/>
+        android:label="CoinInfoFragment">
+        <argument
+            android:name="CoinForVIew"
+            app:argType="by.popkov.cryptoportfolio.data_classes.CoinForView" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="by.popkov.cryptoportfolio.settings_fragment.SettingsFragment"

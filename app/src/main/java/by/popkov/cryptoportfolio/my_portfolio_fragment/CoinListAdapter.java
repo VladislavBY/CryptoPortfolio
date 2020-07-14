@@ -1,6 +1,5 @@
 package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> implements Filterable {
@@ -72,9 +70,9 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             coinPrise24HChange = itemView.findViewById(R.id.coinPrise24HChange);
             coinPriseSum = itemView.findViewById(R.id.coinPriseSum);
             itemView.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(CoinInfoFragment.EXTRA_COIN_FOR_VIEW, itemList.get(getAdapterPosition()));
-                Navigation.findNavController(v).navigate(R.id.action_myPortfolioFragment_to_coinInfoFragment, bundle);
+                CoinForView coinForView = itemList.get(getAdapterPosition());
+                Navigation.findNavController(v)
+                        .navigate(MyPortfolioFragmentDirections.actionMyPortfolioFragmentToCoinInfoFragment(coinForView));
             });
         }
 
@@ -88,7 +86,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             coinPrise24HChange.setTextColor(coinForView.getChange24Color());
             coinPriseSum.setText(coinForView.getSum());
         }
-
     }
 
     private Filter contactFilter = new Filter() {

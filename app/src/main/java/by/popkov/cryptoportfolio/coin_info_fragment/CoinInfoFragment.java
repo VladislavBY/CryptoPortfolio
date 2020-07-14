@@ -32,8 +32,6 @@ import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment {
-    public static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
-
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
@@ -150,7 +148,7 @@ public class CoinInfoFragment extends Fragment {
 
     private CoinForView extractCoinForView() {
         if (getArguments() != null) {
-            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
+            return CoinInfoFragmentArgs.fromBundle(getArguments()).getCoinForVIew();
         }
         throw new IllegalArgumentException("Not found CoinForView in Arguments");
     }
