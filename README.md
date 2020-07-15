@@ -15,16 +15,8 @@ Main used tools:
 
 ✔ JUnit + Mockito and Espresso
 
-✔ Animations
+✔ Navigation + Animation
 
-Screens:
-https://drive.google.com/file/d/1n8cBYiLNjBwWNHq9n7iQezOxAK1zopCL/view?usp=sharing
-
-https://drive.google.com/file/d/1LaNnfiCnOXw__Fj7ONRu_CS-b3GLnsFG/view?usp=sharing
-
-https://drive.google.com/file/d/1KXKwN28JOxu7RF00tHhVUo34-hEIH-EJ/view?usp=sharing
-
-https://drive.google.com/file/d/1PyuxiKrlfTjk9Q2sVEyr5AEBkG3f4olI/view?usp=sharing
-
+Play Store: https://play.google.com/store/apps/details?id=by.popkov.cryptoportfolio
  
 LinkedIn: https://www.linkedin.com/in/vladislav-popkov/
