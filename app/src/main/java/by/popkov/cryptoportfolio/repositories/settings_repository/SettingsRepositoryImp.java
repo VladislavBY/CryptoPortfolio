@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import javax.inject.Inject;
+
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 
 public class SettingsRepositoryImp implements SettingsRepository {
@@ -22,6 +24,7 @@ public class SettingsRepositoryImp implements SettingsRepository {
 
     private SharedPreferences sharedPreferences;
 
+    @Inject
     public SettingsRepositoryImp(@NonNull Context context) {
         this.sharedPreferences = context.getSharedPreferences(SETTINGS_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }

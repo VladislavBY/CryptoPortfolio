@@ -12,14 +12,13 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.TestOnly;
 
-import java.util.Optional;
+import javax.inject.Inject;
 
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.R;
 
 import static by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp.BTC;
@@ -37,9 +36,8 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 
 public class SettingsFragment extends Fragment {
     public static Boolean needUpdatePortfolio = false;
-    private Context context;
-    private Optional<ViewModelProvider.Factory> viewModelFactoryOptional = Optional.empty();
-    private SettingsFragmentViewModel settingsFragmentViewModel;
+    @Inject
+    SettingsFragmentViewModel settingsFragmentViewModel;
     private RadioGroup selectedSymbol;
     private RadioGroup selectedSortType;
     private ImageButton homeBtn;
@@ -47,7 +45,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        if (getActivity() != null) {
+            ((MyApplication) getActivity().getApplication()).getAppComponent().inject(this);
+        }
     }
 
     @Nullable
@@ -59,16 +59,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViewModel();
         initViews(view);
-    }
-
-    private void initViewModel() {
-        if (!viewModelFactoryOptional.isPresent()) {
-            viewModelFactoryOptional = Optional.of(new SettingsFragmentViewModelFactory(context));
-        }
-        viewModelFactoryOptional.ifPresent(viewModelFactory -> settingsFragmentViewModel = new ViewModelProvider(
-                getViewModelStore(), viewModelFactory).get(SettingsFragmentViewModel.class));
     }
 
     private void initViews(@NotNull View view) {
@@ -182,16 +173,5 @@ public class SettingsFragment extends Fragment {
 
     private void setBackBtnListener() {
         homeBtn.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        context = null;
-    }
-
-    @TestOnly
-    void setViewModelFactoryOptional(ViewModelProvider.Factory viewModelFactory) {
-        viewModelFactoryOptional = Optional.of(viewModelFactory);
     }
 }
