@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
@@ -19,22 +20,18 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 @Singleton
-class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
-    private ApiRepository apiRepository;
-    private DatabaseRepository databaseRepository;
-    private SettingsRepository settingsRepository;
+public class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
+    @Inject
+    ApiRepository apiRepository;
+    @Inject
+    DatabaseRepository databaseRepository;
+    @Inject
+    SettingsRepository settingsRepository;
 
     @Inject
-    AddNewCoinDialogFragmentViewModel(
-            Application application,
-            ApiRepository apiRepository,
-            DatabaseRepository databaseRepository,
-            SettingsRepository settingsRepository
-    ) {
+    AddNewCoinDialogFragmentViewModel(Application application) {
         super(application);
-        this.apiRepository = apiRepository;
-        this.databaseRepository = databaseRepository;
-        this.settingsRepository = settingsRepository;
+        ((MyApplication) getApplication()).getAppComponent().inject(this);
     }
 
     void saveCoin(@NotNull String symbol, String number) {

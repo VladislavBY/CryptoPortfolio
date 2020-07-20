@@ -15,6 +15,7 @@ import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
@@ -23,12 +24,15 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 @Singleton
-class CoinInfoFragmentViewModel extends AndroidViewModel {
-
-    private ApiRepository apiRepository;
-    private DatabaseRepository databaseRepository;
-    private SettingsRepository settingsRepository;
-    private Function<Coin, CoinForView> mapper;
+public class CoinInfoFragmentViewModel extends AndroidViewModel {
+    @Inject
+    ApiRepository apiRepository;
+    @Inject
+    DatabaseRepository databaseRepository;
+    @Inject
+    SettingsRepository settingsRepository;
+    @Inject
+    Function<Coin, CoinForView> mapper;
     private CoinForView coinForView;
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
@@ -41,18 +45,9 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     }
 
     @Inject
-    CoinInfoFragmentViewModel(
-            Application application,
-            ApiRepository apiRepository,
-            DatabaseRepository databaseRepository,
-            SettingsRepository settingsRepository,
-            Function<Coin, CoinForView> mapper
-    ) {
+    CoinInfoFragmentViewModel(Application application) {
         super(application);
-        this.apiRepository = apiRepository;
-        this.databaseRepository = databaseRepository;
-        this.settingsRepository = settingsRepository;
-        this.mapper = mapper;
+        ((MyApplication) getApplication()).getAppComponent().inject(this);
     }
 
     LiveData<Boolean> getIsLoadingLiveData() {

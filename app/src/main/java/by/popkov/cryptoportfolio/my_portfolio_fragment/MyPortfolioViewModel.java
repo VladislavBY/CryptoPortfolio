@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfo;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
@@ -32,35 +33,28 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.TIME_ADD_SORT;
 
 @Singleton
-class MyPortfolioViewModel extends AndroidViewModel {
-    private ApiRepository apiRepository;
-    private DatabaseRepository databaseRepository;
-    private SettingsRepository settingsRepository;
-    private Function<Coin, CoinForView> coinForViewMapper;
-    private Function<List<Coin>, PortfolioInfo> portfolioInfoMapper;
-    private Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
+public class MyPortfolioViewModel extends AndroidViewModel {
+    @Inject
+    ApiRepository apiRepository;
+    @Inject
+    DatabaseRepository databaseRepository;
+    @Inject
+    SettingsRepository settingsRepository;
+    @Inject
+    Function<Coin, CoinForView> coinForViewMapper;
+    @Inject
+    Function<List<Coin>, PortfolioInfo> portfolioInfoMapper;
+    @Inject
+    Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<String> searchViewQueryMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
 
     @Inject
-    MyPortfolioViewModel(
-            Application application,
-            ApiRepository apiRepository,
-            DatabaseRepository databaseRepository,
-            SettingsRepository settingsRepository,
-            Function<Coin, CoinForView> coinForViewMapper,
-            Function<List<Coin>, PortfolioInfo> portfolioInfoMapper,
-            Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper
-    ) {
+    MyPortfolioViewModel(Application application) {
         super(application);
-        this.apiRepository = apiRepository;
-        this.databaseRepository = databaseRepository;
-        this.settingsRepository = settingsRepository;
-        this.coinForViewMapper = coinForViewMapper;
-        this.portfolioInfoMapper = portfolioInfoMapper;
-        this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
+        ((MyApplication) getApplication()).getAppComponent().inject(this);
         connectToRepo();
     }
 

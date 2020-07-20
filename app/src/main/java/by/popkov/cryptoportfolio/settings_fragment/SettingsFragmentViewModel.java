@@ -1,19 +1,24 @@
 package by.popkov.cryptoportfolio.settings_fragment;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 
 @Singleton
-class SettingsFragmentViewModel extends ViewModel {
-    private SettingsRepository settingsRepository;
+public class SettingsFragmentViewModel extends AndroidViewModel {
+    @Inject
+    SettingsRepository settingsRepository;
 
     @Inject
-    SettingsFragmentViewModel(SettingsRepository settingsRepository) {
-        this.settingsRepository = settingsRepository;
+    SettingsFragmentViewModel(Application application) {
+        super(application);
+        ((MyApplication) getApplication()).getAppComponent().inject(this);
     }
 
     String getFiatSettings() {
