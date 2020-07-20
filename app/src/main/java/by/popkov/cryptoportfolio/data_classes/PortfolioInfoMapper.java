@@ -5,9 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
 import by.popkov.cryptoportfolio.domain.Coin;
 
 public class PortfolioInfoMapper implements Function<List<Coin>, PortfolioInfo> {
+    @Inject
+    public PortfolioInfoMapper() {
+    }
 
     @Override
     public PortfolioInfo apply(@NotNull List<Coin> coinList) {

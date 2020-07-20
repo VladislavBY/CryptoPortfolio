@@ -11,35 +11,32 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
+
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.R;
 
 public class AddNewCoinDialogFragment extends DialogFragment {
-    private AddNewCoinDialogFragmentViewModel addNewCoinDialogFragmentViewModel;
+    @Inject
+    AddNewCoinDialogFragmentViewModel addNewCoinDialogFragmentViewModel;
     private Context context;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+        if (getActivity() != null) {
+            ((MyApplication) getActivity().getApplication()).getAppComponent().inject(this);
+        }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        initViewModel();
         return makeDialog();
-    }
-
-    private void initViewModel() {
-        if (getActivity() != null) {
-            addNewCoinDialogFragmentViewModel = new ViewModelProvider(
-                    getViewModelStore(), new AddNewCoinDialogFragmentViewModelFactory(getActivity().getApplication(), context)
-            ).get(AddNewCoinDialogFragmentViewModel.class);
-        }
     }
 
     @NotNull
@@ -61,7 +58,10 @@ public class AddNewCoinDialogFragment extends DialogFragment {
     }
 
     private void saveNewCoin(String symbol, String number) {
-        addNewCoinDialogFragmentViewModel.saveCoin(symbol, number);
+        if (addNewCoinDialogFragmentViewModel != null) {
+            addNewCoinDialogFragmentViewModel.saveCoin(symbol, number);
+        }
+
     }
 
     @Override

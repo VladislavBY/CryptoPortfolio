@@ -9,17 +9,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
+@Singleton
 class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
     private SettingsRepository settingsRepository;
 
+    @Inject
     AddNewCoinDialogFragmentViewModel(
             Application application,
             ApiRepository apiRepository,

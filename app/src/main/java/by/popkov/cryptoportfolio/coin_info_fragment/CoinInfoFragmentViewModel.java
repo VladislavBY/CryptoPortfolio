@@ -12,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
@@ -19,6 +22,7 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
+@Singleton
 class CoinInfoFragmentViewModel extends AndroidViewModel {
 
     private ApiRepository apiRepository;
@@ -29,9 +33,16 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
 
+    void setCoinForView(CoinForView coinForView) {
+        if (this.coinForView == null) {
+            this.coinForView = coinForView;
+            connectToRepo();
+        }
+    }
+
+    @Inject
     CoinInfoFragmentViewModel(
             Application application,
-            CoinForView coinForView,
             ApiRepository apiRepository,
             DatabaseRepository databaseRepository,
             SettingsRepository settingsRepository,
@@ -42,8 +53,6 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
         this.databaseRepository = databaseRepository;
         this.settingsRepository = settingsRepository;
         this.mapper = mapper;
-        this.coinForView = coinForView;
-        connectToRepo();
     }
 
     LiveData<Boolean> getIsLoadingLiveData() {

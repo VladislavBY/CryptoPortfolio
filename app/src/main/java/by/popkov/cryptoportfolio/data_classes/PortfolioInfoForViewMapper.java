@@ -5,10 +5,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
 import by.popkov.cryptoportfolio.utils.ShortSymbolConverter;
 
 public class PortfolioInfoForViewMapper implements Function<PortfolioInfo, PortfolioInfoForView> {
     private static final String numberFormat = "%.2f";
+
+    @Inject
+    public PortfolioInfoForViewMapper() {
+    }
 
     @Override
     public PortfolioInfoForView apply(@NotNull PortfolioInfo portfolioInfo) {

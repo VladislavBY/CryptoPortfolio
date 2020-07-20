@@ -19,7 +19,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,11 +27,15 @@ import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
+
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment {
-    private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
+    @Inject
+    CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
     private TextView coinSymbol;
@@ -55,6 +58,9 @@ public class CoinInfoFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+        if (getActivity() != null) {
+            ((MyApplication) getActivity().getApplication()).getAppComponent().inject(this);
+        }
     }
 
     @Nullable
@@ -137,13 +143,12 @@ public class CoinInfoFragment extends Fragment {
     }
 
     private void initViewModel() {
-        if (getActivity() != null) {
-            coinInfoFragmentViewModel = new ViewModelProvider(this,
-                    new CoinInfoFragmentViewModelFactory(extractCoinForView(), getActivity().getApplication(), context))
-                    .get(CoinInfoFragmentViewModel.class);
+        if (coinInfoFragmentViewModel != null) {
+            coinInfoFragmentViewModel.setCoinForView(extractCoinForView());
             coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
             coinInfoFragmentViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), this::loadSwitcher);
         }
+
     }
 
     private CoinForView extractCoinForView() {

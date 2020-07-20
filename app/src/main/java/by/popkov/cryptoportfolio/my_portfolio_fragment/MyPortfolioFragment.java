@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
@@ -34,7 +36,8 @@ import by.popkov.cryptoportfolio.settings_fragment.SettingsFragment;
 
 public class MyPortfolioFragment extends Fragment {
     private Context context;
-    private MyPortfolioViewModel myPortfolioViewModel;
+    @Inject
+    MyPortfolioViewModel myPortfolioViewModel;
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
     private FloatingActionButton addCoinFab;
     private ImageButton settingsImageButton;
@@ -50,6 +53,9 @@ public class MyPortfolioFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+        if (getActivity() != null) {
+            ((MyApplication) getActivity().getApplication()).getAppComponent().inject(this);
+        }
     }
 
     @Nullable
@@ -134,11 +140,8 @@ public class MyPortfolioFragment extends Fragment {
     }
 
     private void initViewModel() {
-        if (getActivity() != null) {
+        if (myPortfolioViewModel != null) {
             LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
-            myPortfolioViewModel = new ViewModelProvider(
-                    this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
-                    .get(MyPortfolioViewModel.class);
             myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
                         coinListAdapterOptional.ifPresent(coinListAdapter -> {
                             coinListAdapter.setCoinItemList(coinForViews);

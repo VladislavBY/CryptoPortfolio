@@ -5,11 +5,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.utils.ShortSymbolConverter;
 
 public class CoinForViewMapper implements Function<Coin, CoinForView> {
     private static final String numberFormat = "%.2f";
+
+    @Inject
+    CoinForViewMapper() {
+    }
 
     @Override
     public CoinForView apply(@NotNull Coin coin) {

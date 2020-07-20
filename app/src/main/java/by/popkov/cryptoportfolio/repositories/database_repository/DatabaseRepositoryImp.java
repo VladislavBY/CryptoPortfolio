@@ -12,6 +12,9 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDao;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDatabase;
@@ -19,7 +22,7 @@ import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinE
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-
+@Singleton
 public class DatabaseRepositoryImp implements DatabaseRepository {
     private CoinDao coinDao;
     private ExecutorService executorService;
@@ -27,6 +30,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     private LiveData<CoinEntity> coinEntityLiveData;
     private Function<CoinEntity, Coin> mapper;
 
+    @Inject
     public DatabaseRepositoryImp(@NonNull final Context context, Function<CoinEntity, Coin> mapper) {
         CoinDatabase coinDatabase = CoinDatabase.getInstance(context);
         this.coinDao = coinDatabase.getCoinDao();
