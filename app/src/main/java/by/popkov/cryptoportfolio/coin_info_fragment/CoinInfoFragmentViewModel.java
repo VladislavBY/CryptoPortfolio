@@ -23,7 +23,6 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
-@Singleton
 public class CoinInfoFragmentViewModel extends AndroidViewModel {
     @Inject
     ApiRepository apiRepository;
