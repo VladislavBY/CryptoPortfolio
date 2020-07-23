@@ -21,8 +21,10 @@ import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
+@Singleton
 public class CoinInfoFragmentViewModel extends AndroidViewModel {
     @Inject
     ApiRepository apiRepository;
@@ -35,11 +37,18 @@ public class CoinInfoFragmentViewModel extends AndroidViewModel {
     private CoinForView coinForView;
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
+    private Disposable subscribeOnCoin;
 
     void setCoinForView(CoinForView coinForView) {
         if (this.coinForView == null) {
             this.coinForView = coinForView;
             connectToRepo();
+        } else if (!this.coinForView.getId().equals(coinForView.getId())) {
+            if (!subscribeOnCoin.isDisposed()) {
+                subscribeOnCoin.dispose();
+                this.coinForView = coinForView;
+                connectToRepo();
+            }
         }
     }
 
@@ -80,7 +89,7 @@ public class CoinInfoFragmentViewModel extends AndroidViewModel {
     @SuppressLint("CheckResult")
     private void connectToRepo() {
         setIsLoadingLiveData(true);
-        databaseRepository.getCoinObservable(coinForView.getId()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+        subscribeOnCoin = databaseRepository.getCoinObservable(coinForView.getId()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(
                         coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                                 .map(coin1 -> mapper.apply(coin1))
