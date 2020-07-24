@@ -1,9 +1,6 @@
 package by.popkov.cryptoportfolio.settings_fragment;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -11,12 +8,11 @@ import javax.inject.Singleton;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 
 @Singleton
-public class SettingsFragmentViewModel extends AndroidViewModel {
+public class SettingsFragmentViewModel extends ViewModel {
     private SettingsRepository settingsRepository;
 
     @Inject
-    SettingsFragmentViewModel(@NonNull Application application, SettingsRepository settingsRepository) {
-        super(application);
+    SettingsFragmentViewModel(SettingsRepository settingsRepository) {
         this.settingsRepository = settingsRepository;
     }
 
