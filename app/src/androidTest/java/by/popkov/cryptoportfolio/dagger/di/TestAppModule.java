@@ -20,27 +20,29 @@ import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinE
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 import dagger.Binds;
+import dagger.Module;
 
+@Module
 public abstract class TestAppModule {
     @Binds
     abstract SettingsRepository provideSettingsRepository(FakeSettingsRepository f);
 
-    @Binds
-    abstract ApiRepository provideApiRepository(ApiRepositoryImp apiRepositoryImp);
-
-    @Binds
-    abstract DatabaseRepository provideDatabaseRepository(DatabaseRepositoryImp databaseRepositoryImp);
-
-    @Binds
-    abstract Function<CoinEntity, Coin> provideCoinMapper(CoinMapper coinMapper);
-
-    @Binds
-    abstract Function<Coin, CoinForView> provideCoinForViewMapper(CoinForViewMapper coinForViewMapper);
-
-    @Binds
-    abstract Function<List<Coin>, PortfolioInfo> providePortfolioInfoMapper(PortfolioInfoMapper portfolioInfoMapper);
-
-    @Binds
-    abstract Function<PortfolioInfo, PortfolioInfoForView> providePortfolioInfoForViewMapper(PortfolioInfoForViewMapper portfolioInfoForViewMapper);
+//    @Binds
+//    abstract ApiRepository provideApiRepository(ApiRepositoryImp apiRepositoryImp);
+//
+//    @Binds
+//    abstract DatabaseRepository provideDatabaseRepository(DatabaseRepositoryImp databaseRepositoryImp);
+//
+//    @Binds
+//    abstract Function<CoinEntity, Coin> provideCoinMapper(CoinMapper coinMapper);
+//
+//    @Binds
+//    abstract Function<Coin, CoinForView> provideCoinForViewMapper(CoinForViewMapper coinForViewMapper);
+//
+//    @Binds
+//    abstract Function<List<Coin>, PortfolioInfo> providePortfolioInfoMapper(PortfolioInfoMapper portfolioInfoMapper);
+//
+//    @Binds
+//    abstract Function<PortfolioInfo, PortfolioInfoForView> providePortfolioInfoForViewMapper(PortfolioInfoForViewMapper portfolioInfoForViewMapper);
 
 }
