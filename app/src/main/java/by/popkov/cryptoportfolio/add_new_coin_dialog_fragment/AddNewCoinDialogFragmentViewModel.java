@@ -21,11 +21,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 @Singleton
 public class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
-
     private ApiRepository apiRepository;
-
     private DatabaseRepository databaseRepository;
-
     private SettingsRepository settingsRepository;
 
     @Inject
