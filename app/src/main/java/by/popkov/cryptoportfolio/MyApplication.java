@@ -9,10 +9,14 @@ public class MyApplication extends Application {
         if (appComponent == null) {
             synchronized (this) {
                 if (appComponent == null) {
-                    appComponent = DaggerAppComponent.factory().create(getApplicationContext(), this);
+                    appComponent = initializeComponent();
                 }
             }
         }
         return appComponent;
+    }
+
+    protected AppComponent initializeComponent() {
+        return DaggerAppComponent.factory().create(getApplicationContext(), this);
     }
 }
