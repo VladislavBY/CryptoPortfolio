@@ -3,6 +3,7 @@ package by.popkov.cryptoportfolio.add_new_coin_dialog_fragment;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
@@ -21,17 +21,24 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 @Singleton
 public class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
-    @Inject
-    ApiRepository apiRepository;
-    @Inject
-    DatabaseRepository databaseRepository;
-    @Inject
-    SettingsRepository settingsRepository;
+
+    private ApiRepository apiRepository;
+
+    private DatabaseRepository databaseRepository;
+
+    private SettingsRepository settingsRepository;
 
     @Inject
-    AddNewCoinDialogFragmentViewModel(Application application) {
+    AddNewCoinDialogFragmentViewModel(
+            @NonNull Application application,
+            ApiRepository apiRepository,
+            DatabaseRepository databaseRepository,
+            SettingsRepository settingsRepository
+    ) {
         super(application);
-        ((MyApplication) getApplication()).getAppComponent().inject(this);
+        this.apiRepository = apiRepository;
+        this.databaseRepository = databaseRepository;
+        this.settingsRepository = settingsRepository;
     }
 
     void saveCoin(@NotNull String symbol, String number) {

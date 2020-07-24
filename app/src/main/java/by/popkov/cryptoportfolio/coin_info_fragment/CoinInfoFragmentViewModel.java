@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,7 +16,6 @@ import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
@@ -26,14 +26,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 @Singleton
 public class CoinInfoFragmentViewModel extends AndroidViewModel {
-    @Inject
-    ApiRepository apiRepository;
-    @Inject
-    DatabaseRepository databaseRepository;
-    @Inject
-    SettingsRepository settingsRepository;
-    @Inject
-    Function<Coin, CoinForView> mapper;
+    private ApiRepository apiRepository;
+    private DatabaseRepository databaseRepository;
+    private SettingsRepository settingsRepository;
+    private Function<Coin, CoinForView> mapper;
     private CoinForView coinForView;
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
@@ -53,9 +49,18 @@ public class CoinInfoFragmentViewModel extends AndroidViewModel {
     }
 
     @Inject
-    CoinInfoFragmentViewModel(Application application) {
+    CoinInfoFragmentViewModel(
+            @NonNull Application application,
+            ApiRepository apiRepository,
+            DatabaseRepository databaseRepository,
+            SettingsRepository settingsRepository,
+            Function<Coin, CoinForView> mapper
+    ) {
         super(application);
-        ((MyApplication) getApplication()).getAppComponent().inject(this);
+        this.apiRepository = apiRepository;
+        this.databaseRepository = databaseRepository;
+        this.settingsRepository = settingsRepository;
+        this.mapper = mapper;
     }
 
     LiveData<Boolean> getIsLoadingLiveData() {

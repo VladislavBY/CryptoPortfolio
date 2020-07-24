@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfo;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
@@ -34,27 +34,34 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 
 @Singleton
 public class MyPortfolioViewModel extends AndroidViewModel {
-    @Inject
-    ApiRepository apiRepository;
-    @Inject
-    DatabaseRepository databaseRepository;
-    @Inject
-    SettingsRepository settingsRepository;
-    @Inject
-    Function<Coin, CoinForView> coinForViewMapper;
-    @Inject
-    Function<List<Coin>, PortfolioInfo> portfolioInfoMapper;
-    @Inject
-    Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
+    private ApiRepository apiRepository;
+    private DatabaseRepository databaseRepository;
+    private SettingsRepository settingsRepository;
+    private Function<Coin, CoinForView> coinForViewMapper;
+    private Function<List<Coin>, PortfolioInfo> portfolioInfoMapper;
+    private Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<String> searchViewQueryMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
 
     @Inject
-    MyPortfolioViewModel(Application application) {
+    MyPortfolioViewModel(
+            @NonNull Application application,
+            ApiRepository apiRepository,
+            DatabaseRepository databaseRepository,
+            SettingsRepository settingsRepository,
+            Function<Coin, CoinForView> coinForViewMapper,
+            Function<List<Coin>, PortfolioInfo> portfolioInfoMapper,
+            Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper
+    ) {
         super(application);
-        ((MyApplication) getApplication()).getAppComponent().inject(this);
+        this.apiRepository = apiRepository;
+        this.databaseRepository = databaseRepository;
+        this.settingsRepository = settingsRepository;
+        this.coinForViewMapper = coinForViewMapper;
+        this.portfolioInfoMapper = portfolioInfoMapper;
+        this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
         connectToRepo();
     }
 
