@@ -12,4 +12,8 @@ import dagger.Component;
 @Singleton
 @Component(modules = {TestAppModule.class})
 public interface TestAppComponent extends AppComponent {
+    @Component.Factory
+    interface Factory {
+        AppComponent create(@BindsInstance Context context, @BindsInstance Application application);
+    }
 }

@@ -72,7 +72,7 @@ public class SettingsFragmentTest {
         @Override
         public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
             SettingsFragment fragment = new SettingsFragment();
-            fragment.setViewModelFactoryOptional(ViewModelUtil.createViewModelFactory(settingsFragmentViewModel));
+            //fragment.setViewModelFactoryOptional(ViewModelUtil.createViewModelFactory(settingsFragmentViewModel));
             return fragment;
         }
     }
