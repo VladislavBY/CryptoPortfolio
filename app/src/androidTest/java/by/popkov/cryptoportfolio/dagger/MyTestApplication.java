@@ -1,6 +1,6 @@
 package by.popkov.cryptoportfolio.dagger;
 
-import by.popkov.cryptoportfolio.AppComponent;
+import by.popkov.cryptoportfolio.di.AppComponent;
 import by.popkov.cryptoportfolio.MyApplication;
 import by.popkov.cryptoportfolio.dagger.di.DaggerTestAppComponent;
 

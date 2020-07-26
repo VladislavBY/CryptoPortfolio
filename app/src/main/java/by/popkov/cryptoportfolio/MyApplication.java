@@ -2,6 +2,8 @@ package by.popkov.cryptoportfolio;
 
 import android.app.Application;
 
+import by.popkov.cryptoportfolio.di.AppComponent;
+
 public class MyApplication extends Application {
     private static volatile AppComponent appComponent;
 

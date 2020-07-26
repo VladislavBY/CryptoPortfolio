@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio;
+package by.popkov.cryptoportfolio.di;
 
 import java.util.List;
 import java.util.function.Function;
@@ -43,5 +43,4 @@ abstract class AppModule {
 
     @Binds
     abstract Function<PortfolioInfo, PortfolioInfoForView> providePortfolioInfoForViewMapper(PortfolioInfoForViewMapper portfolioInfoForViewMapper);
-
 }

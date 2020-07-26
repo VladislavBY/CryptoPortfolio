@@ -5,7 +5,7 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import by.popkov.cryptoportfolio.AppComponent;
+import by.popkov.cryptoportfolio.di.AppComponent;
 import dagger.BindsInstance;
 import dagger.Component;
 
